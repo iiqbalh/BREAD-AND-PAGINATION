@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/iiqbalh/BREAD-AND-PAGINATION#readme",
   "description": "",
+  "type": "module",
   "dependencies": {
     "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
