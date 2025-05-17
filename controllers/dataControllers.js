@@ -1,9 +1,11 @@
 import { Data } from "../models/Data.js"
 
 export function getData(req, res) {
-    const page = req.query.page || 1;
-    Data.all(page, (data, pages, offset) => {
-        res.render('read', { data, pages, offset, page })
+    const { page = 1, name, height, weight, stardate, enddate, married, operation} = req.query;
+    const url = req.url === '/' ? '/?page=1' : req.url
+
+    Data.all(page, name, height, weight, stardate, enddate, married, operation, (data, pages, offset) => {
+        res.render('read', { data, pages, offset, page, url, query: req.query })
     })
 }
 

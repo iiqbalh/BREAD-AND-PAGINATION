@@ -26,16 +26,62 @@ export class Data {
         }
     }
 
-    static all(page, callback) {
+    static all(page, name, height, weight, stardate, enddate, married, operation, callback) {
+
+        const params = [];
+        const query = [];
+        let sqlGet = "select count(*) as total from data";
+        let sqlAll = "select * from data";
+
+        if (name) {
+            params.push('name like "%"||?||"%"');
+            query.push(name);
+        }
+
+        if (height) {
+            params.push('height = ?');
+            query.push(height);
+        }
+
+        if (weight) {
+            params.push('weight = ?');
+            query.push(weight);
+        }
+
+        if (stardate && enddate) {
+            params.push('birthdate between ? and ?');
+            query.push(stardate, enddate);
+        } else if (stardate) {
+            params.push('birthdate >= ?');
+            query.push(stardate);
+        } else if (enddate) {
+            params.push('birthdate <= ?');
+            query.push(enddate);
+        }
+
+        if (married) {
+            params.push('married = ?');
+            query.push(married);
+        }
+
+        if (params.length > 0) {
+            sqlGet += ` where ${params.join(` ${operation} `)}`;
+            sqlAll += ` where ${params.join(` ${operation} `)}`;
+        }
+
         const limit = 5;
         const offset = (page - 1) * limit;
-        db.all("select count(*) as total from data", (err, rows) => {
+        db.get(sqlGet, query, (err, rows) => {
             if (err) return console.log(err);
-            const total = rows[0].total;
+            const total = rows.total;
             const pages = Math.ceil(total / limit)
-            db.all("select * from data limit ? offset ?", [limit, offset], (err, rows) => {
+
+            sqlAll += ` order by id limit ? offset ?`;
+            query.push(limit, offset);
+
+            db.all(sqlAll, query, (err, rows) => {
                 if (err) return console.log(err);
-                callback(rows, pages, offset )
+                callback(rows, pages, offset)
             })
         })
     }
