@@ -1,8 +1,9 @@
 import { Data } from "../models/Data.js"
 
 export function getData(req, res) {
-    Data.all((data) => {
-        res.render('read', { data })
+    const page = req.query.page || 1;
+    Data.all(page, (data, pages, offset) => {
+        res.render('read', { data, pages, offset, page })
     })
 }
 
@@ -36,7 +37,7 @@ export function updateData(req, res) {
 
 export function removeData(req, res) {
     const id = req.params.id;
-    Data.get(id, () => {
+    Data.remove(id, () => {
         res.redirect('/');
     })
 }

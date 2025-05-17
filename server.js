@@ -20,6 +20,6 @@ app.get('/edit/:id', getUpdate)
 
 app.post('/edit/:id', updateData)
 
-app.post('/delete/:id', removeData)
+app.get('/delete/:id', removeData)
 
 app.listen(3000)

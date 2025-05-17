@@ -26,10 +26,17 @@ export class Data {
         }
     }
 
-    static all(callback) {
-        db.all("select * from data", (err, rows) => {
+    static all(page, callback) {
+        const limit = 5;
+        const offset = (page - 1) * limit;
+        db.all("select count(*) as total from data", (err, rows) => {
             if (err) return console.log(err);
-            callback(rows)
+            const total = rows[0].total;
+            const pages = Math.ceil(total / limit)
+            db.all("select * from data limit ? offset ?", [limit, offset], (err, rows) => {
+                if (err) return console.log(err);
+                callback(rows, pages, offset )
+            })
         })
     }
 
@@ -49,7 +56,7 @@ export class Data {
     }
 
     static update(name, height, weight, birthdate, married, id, callback) {
-        db.run("update data set name = ?, set height = ?, set weight = ?, set birthdate = ?, set married = ?, where id = ?",
+        db.run("update data set name = ?, height = ?, weight = ?, birthdate = ?, married = ? where id = ?",
             [name, height, weight, birthdate, married, id], (err) => {
                 if (err) return console.log(err);
                 callback()
@@ -57,7 +64,7 @@ export class Data {
     }
 
     static remove(id, callback) {
-        db.run("delete from data where id = ?", [id], (err) => {
+        db.get("delete from data where id = ?", [id], (err) => {
             if (err) return console.log(err);
             callback()
         })

@@ -55,25 +55,25 @@
                         <%if(!data.married==1) {%>
                             <div class="col-sm-8">
                                 <div class="form-check px-0">
-                                    <input type="radio" class="form-input" name="married" value="false" checked>
-                                    <label for="false" class="form-label">Not Yet</label>
+                                    <input type="radio" class="form-input" name="married" value="0" checked>
+                                    <label for="married" class="form-label">Not Yet</label>
                                 </div>
 
                                 <div class="form-check px-0">
-                                    <input type="radio" class="form-input" name="married" value="true">
-                                    <label for="true" class="form-label">Yes</label>
+                                    <input type="radio" class="form-input" name="married" value="1">
+                                    <label for="married" class="form-label">Yes</label>
                                 </div>
                             </div>
                             <%}else {%>
                                 <div class="col-sm-8">
                                     <div class="form-check px-0">
-                                        <input type="radio" class="form-input" name="married" value="false">
-                                        <label for="false" class="form-label">Not Yet</label>
+                                        <input type="radio" class="form-input" name="married" value="0">
+                                        <label for="married" class="form-label">Not Yet</label>
                                     </div>
 
                                     <div class="form-check px-0">
-                                        <input type="radio" class="form-input" name="married" value="true" checked>
-                                        <label for="true" class="form-label">Yes</label>
+                                        <input type="radio" class="form-input" name="married" value="1" checked>
+                                        <label for="married" class="form-label">Yes</label>
                                     </div>
                                 </div>
                                 <%}%>
