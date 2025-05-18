@@ -10,22 +10,6 @@ export class Data {
         this.married = married;
     }
 
-    save(callback = function () { }) {
-        if (this.id) {
-            db.run("update data set name = ?, set height = ?, set weight = ?, set birthdate = ?, where id = ?",
-                [this.name, this.height, this.weight, this.birthdate, this.married, this.id], (err) => {
-                    if (err) return console.log(err);
-                    callback()
-                })
-        } else {
-            db.run("insert into data (name, height, weight, birthdate) values (?, ?, ?, ?)",
-                [this.name, this.height, this.weight, this.birthdate, this.married], (err) => {
-                    if (err) return console.log(err);
-                    callback()
-                })
-        }
-    }
-
     static all(page, name, height, weight, stardate, enddate, married, operation, callback) {
 
         const params = [];
@@ -74,14 +58,14 @@ export class Data {
         db.get(sqlGet, query, (err, rows) => {
             if (err) return console.log(err);
             const total = rows.total;
-            const pages = Math.ceil(total / limit)
+            const pages = Math.ceil(total / limit);
 
             sqlAll += ` order by id limit ? offset ?`;
             query.push(limit, offset);
 
             db.all(sqlAll, query, (err, rows) => {
                 if (err) return console.log(err);
-                callback(rows, pages, offset)
+                callback(rows, pages, offset);
             })
         })
     }
@@ -90,14 +74,14 @@ export class Data {
         db.run("insert into data (name, height, weight, birthdate, married) values (?, ?, ?, ?, ?)",
             [name, height, weight, birthdate, married], (err) => {
                 if (err) return console.log(err);
-                callback()
+                callback();
             })
     }
 
     static get(id, callback) {
         db.get("select * from data where id = ?", [id], (err, rows) => {
             if (err) return console.log(err);
-            callback(rows)
+            callback(rows);
         })
     }
 
@@ -105,14 +89,14 @@ export class Data {
         db.run("update data set name = ?, height = ?, weight = ?, birthdate = ?, married = ? where id = ?",
             [name, height, weight, birthdate, married, id], (err) => {
                 if (err) return console.log(err);
-                callback()
+                callback();
             })
     }
 
     static remove(id, callback) {
         db.get("delete from data where id = ?", [id], (err) => {
             if (err) return console.log(err);
-            callback()
+            callback();
         })
     }
 }
