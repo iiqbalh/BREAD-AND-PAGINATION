@@ -24,5 +24,5 @@ app.get('/delete/:id', removeData);
 
 app.listen(3000, () => {
     console.log('Server berjalan di port 3000');
-})
+});
 

@@ -1,4 +1,4 @@
-import { db } from './connect.js'
+import { db } from './connect.js';
 
 export class Data {
     constructor(id, name, height, weight, birthdate, married) {
